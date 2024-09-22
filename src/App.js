@@ -17,7 +17,7 @@ function App(props) {
   
   const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-  const toggleTaskCompleted = (id) => {
+  function toggleTaskCompleted(id) {
     const updatedTasks = tasks.map(task =>
       task.id === id ? { ...task, completed: !task.completed } : task
     );
@@ -29,6 +29,18 @@ function App(props) {
     setTasks([...tasks, newTask]);
   }
 
+  function deleteTask(id) {
+    const remainingTasks = tasks.filter(task => task.id !== id);
+    setTasks(remainingTasks);
+  }
+
+  function editTask(id, newName) {
+    const editedTaskList = tasks.map(task =>
+      task.id === id ? { ...task, name: newName } : task
+    );
+    setTasks(editedTaskList);
+  }
+
   const taskList = tasks
     ?.filter(FILTER_MAP[filter])
     .map((task) => (
@@ -37,7 +49,9 @@ function App(props) {
         name={task.name} 
         completed={task.completed} 
         key={task.id}
-        toggleCompleted={toggleTaskCompleted}
+        toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
+        editTask={editTask}
       />
     ));
 
